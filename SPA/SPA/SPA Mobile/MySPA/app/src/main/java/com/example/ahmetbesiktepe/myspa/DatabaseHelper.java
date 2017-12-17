@@ -1,8 +1,5 @@
 package com.example.ahmetbesiktepe.myspa;
 
-/**
- * Created by Ahmet Besiktepe on 06/12/2017.
- */
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
