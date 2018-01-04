@@ -24,12 +24,12 @@ Context ctx;
     }
     @Override
     protected String doInBackground(String... params) {
-        String myDatabase = "http://172.20.128.25:8080/spa/registrationHelper.php";
+        String myDatabase = "http:///172.20.128.16:8080/spa/registrationHelper.php";
         String method= params[0];
         if(method.equals("register")){
          String username = params[1];
-            String k = params[2];
-
+            String key = params[2];
+            String bank_id = params[3];
             try {
                 URL url = new URL(myDatabase);
                 HttpURLConnection myURLConnection =(HttpURLConnection) url.openConnection();
@@ -39,7 +39,8 @@ Context ctx;
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
                 String data = URLEncoder.encode("username","UTF-8") + "=" +URLEncoder.encode(username,"UTF-8") + "&" +
 
-                URLEncoder.encode("k","UTF-8") + "=" +URLEncoder.encode(k,"UTF-8");
+                URLEncoder.encode("key","UTF-8") + "=" +URLEncoder.encode(key,"UTF-8")+ "&" +
+                        URLEncoder.encode("bank_id","UTF-8") + "=" +URLEncoder.encode(bank_id,"UTF-8")  ;
 
                 bufferedWriter.write(data);
                 bufferedWriter.flush();

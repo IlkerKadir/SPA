@@ -9,19 +9,23 @@ require "db_con.php";
 
 if (!empty($_POST['btnLogin'])) {
 $username = $_POST["username"];
-$bank_id = "1";
+$bank_id = "Bbank";
 $sql = "SELECT username FROM users where username = '".$username."'";
 $result = $con->query($sql);
 if ($result->num_rows > 0) {
   
 $_SESSION["username"] = $username;
 $_SESSION["bank_id"] = $bank_id;
-header("Location: loginqr.php"); 
+header("Location: loginhelper.php"); 
      
 
 }else {
     echo "Username not in database";
 }}
+
+
+
+
 
 
  ?>

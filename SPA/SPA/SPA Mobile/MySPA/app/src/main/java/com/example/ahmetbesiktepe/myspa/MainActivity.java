@@ -42,18 +42,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotolog(View view) {
-       // Intent intent = new Intent(this, OneTimeCode.class);
-        //startActivity(intent);
-        try {
-            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
-            Intent intent = new Intent(ACTION_SCAN);
-            intent.setPackage("com.google.zxing.client.android");
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-            startActivityForResult(intent, 1);
-        } catch (ActivityNotFoundException anfe) {
-            //on catch, show the download dialog
-            showDialog(MainActivity.this, "QR Scanner is missing", "Do you want to install?", "Yes", "No").show();
-        }
+         Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
 
     }
 
@@ -92,16 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 //Pass the QR result to the new activity.
                 i.putExtra("qr", qrResult);
                 startActivity(i);
-            }
-        }else if(requestCode == 1){
-            String qrResult = intent.getStringExtra("SCAN_RESULT");
 
-            Intent i = new Intent(getBaseContext(), Login.class);
-            i.putExtra("qr", qrResult);
-            startActivity(i);
+            }
         }
     }
-
-
-
 }

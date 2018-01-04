@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -21,11 +20,11 @@ public class Register extends AppCompatActivity {
 
 
     EditText e_password;
-    String username,password,k,hashString,ctext,keyRetrieval;
+    String username,password,key,hashString,ctext;
     Cipher cipher;
     DatabaseHelper db;
     String qrResult = "";
-    String bankID;
+    String bank_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +40,8 @@ public class Register extends AppCompatActivity {
         String spliter = "[,]";
         String[] tokens = qrResult.split(spliter);
         username = tokens[0];
-        bankID = tokens[1];
+        bank_id = tokens[1];
 
-         Toast.makeText(this,username, Toast.LENGTH_LONG).show();
-        Toast.makeText(this,bankID, Toast.LENGTH_LONG).show();
 
     }
   private SecretKey generateKey() {
@@ -83,32 +80,30 @@ public class Register extends AppCompatActivity {
             ctext = Base64.encodeToString(encryptedByte, Base64.DEFAULT);}
         return ctext;
     }
-   private String getMacKey(SecretKey secretkey,String ctext) throws Exception{
+
+    /*private String getMacKey(SecretKey  secretkey,String ctext) throws Exception{
         byte[] encryptedTextByte = Base64.decode(ctext,Base64.DEFAULT);
         cipher.init(Cipher.DECRYPT_MODE, secretkey);
         byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
         String decryptedText = new String(decryptedByte);
         return decryptedText;
     }
+*/
     public void reguser(View view) throws Exception{
         password = e_password.getText().toString();
         SecretKey secretKey = generateKey();
         SecretKey hashKey = hashPassword(password,"1234");
         if(secretKey !=null){
-        k = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);}
-        if(hashKey !=null){
-            hashString = Base64.encodeToString(hashKey.getEncoded(), Base64.DEFAULT);}
+        key = Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);}
         cipher = Cipher.getInstance("AES");
-        ctext = createCipherText(hashKey,k);
-        keyRetrieval = getMacKey(hashKey,ctext);
+        ctext = createCipherText(hashKey,key);
         if (!db.isUserExists(username)) {
             db.addUser(username, ctext);
         }
-
         String method = "register";
         OnlineDatabase backTask = new OnlineDatabase(this);
 
-        backTask.execute(method,username,k);
+        backTask.execute(method,username,key,bank_id);
 
         finish();
     }
